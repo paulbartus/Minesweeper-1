@@ -11,14 +11,17 @@ public class MyPanel extends JPanel {
 	private static final int GRID_Y = 0;
 	private static final int INNER_CELL_SIZE = 29;
 	private static final int TOTAL_COLUMNS = 9;
-	private static final int TOTAL_ROWS = 9;   
+	private static final int TOTAL_ROWS = 9; 
+	private static final int MINE = 10;//10 identifies if the array has a mine
+	private static final int NUMBER_OF_MINES = 10;//total mines that appear in the game
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
 	
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
-	
+	public int mineCounter[][] =  new int[TOTAL_COLUMNS][TOTAL_ROWS];//provides information about the cell, mines nearby or if is a mine
+
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("INNER_CELL_SIZE must be positive!");
@@ -29,12 +32,64 @@ public class MyPanel extends JPanel {
 		if (TOTAL_ROWS + (new Random()).nextInt(1) < 3) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("TOTAL_ROWS must be at least 3!");
 		}
-
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
 				colorArray[x][y] = Color.WHITE;
 			}
 		}
+	}
+	
+	public void createTheMines() {
+		//initialize the bombs
+		mineCounter = new int[TOTAL_COLUMNS][TOTAL_ROWS];
+		Random randomColumn = new Random();
+		Random randomRow = new Random();
+		int col, row;
+		for (int i = 0; i < NUMBER_OF_MINES; i++) {
+			do {
+			col = randomColumn.nextInt(TOTAL_COLUMNS);
+			row = randomRow.nextInt(TOTAL_ROWS);
+			} while(mineCounter[col][row] == MINE);
+			mineCounter[col][row] = MINE;
+		}
+		//count bombs near
+		for (int x = 0; x < mineCounter.length; x++) {
+			for (int y = 0; y < mineCounter[0].length; y++) {
+				if(mineCounter[x][y] != MINE) {
+					int neighborCount = 0;
+					if (x > 0 && y > 0 && mineCounter[x-1][y-1] == MINE) {//up left
+						neighborCount++;
+					}
+					if (y > 0 && mineCounter[x][y-1] == MINE) {//up
+						neighborCount++;
+					}
+					if (x < mineCounter.length - 1 && y > 0 && mineCounter[x+1][y-1] == MINE) {//up right
+						neighborCount++;
+					}
+					if (x > 0 && mineCounter[x-1][y] == MINE) {//left
+						neighborCount++;
+					}
+					if (x < mineCounter.length - 1 && mineCounter[x+1][y] == MINE) {//right
+						neighborCount++;
+					}
+					if (x > 0 && y < mineCounter[0].length - 1 && mineCounter[x-1][y+1] == MINE) {//down right
+						neighborCount++;
+					}
+					if (y < mineCounter[0].length - 1 && mineCounter[x][y+1] == MINE) {//down
+						neighborCount++;
+					}
+					if (x < mineCounter.length - 1 && y < mineCounter[0].length - 1 && mineCounter[x+1][y+1] == MINE) {//down left
+						neighborCount++;
+					}
+					mineCounter[x][y] = neighborCount;
+				}
+			}
+		}
+	}
+	
+	public void testMine() {
+		mineCounter[2][3]=MINE;
+		mineCounter[4][5]=MINE;
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -68,6 +123,7 @@ public class MyPanel extends JPanel {
 				}
 			}
 		}
+		
 	}
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
