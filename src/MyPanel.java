@@ -32,6 +32,9 @@ public class MyPanel extends JPanel {
 		if (TOTAL_ROWS + (new Random()).nextInt(1) < 3) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("TOTAL_ROWS must be at least 3!");
 		}
+		
+		createTheMines();
+		
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
 				colorArray[x][y] = Color.WHITE;
@@ -40,18 +43,22 @@ public class MyPanel extends JPanel {
 	}
 	
 	public void createTheMines() {
+		
 		//initialize the bombs
 		mineCounter = new int[TOTAL_COLUMNS][TOTAL_ROWS];
 		Random randomColumn = new Random();
 		Random randomRow = new Random();
-		int col, row;
+		int col;
+		int row;
+		
 		for (int i = 0; i < NUMBER_OF_MINES; i++) {
 			do {
 			col = randomColumn.nextInt(TOTAL_COLUMNS);
 			row = randomRow.nextInt(TOTAL_ROWS);
 			} while(mineCounter[col][row] == MINE);
-			mineCounter[col][row] = MINE;
+				mineCounter[col][row] = MINE;
 		}
+		
 		//count bombs near
 		for (int x = 0; x < mineCounter.length; x++) {
 			for (int y = 0; y < mineCounter[0].length; y++) {
@@ -87,11 +94,6 @@ public class MyPanel extends JPanel {
 		}
 	}
 	
-	public void testMine() {
-		mineCounter[2][3]=MINE;
-		mineCounter[4][5]=MINE;
-	}
-	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -99,10 +101,6 @@ public class MyPanel extends JPanel {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
 		int y1 = myInsets.top;
-//		int x2 = getWidth() - myInsets.right - 1;
-//		int y2 = getHeight() - myInsets.bottom - 1;
-//		int width = x2 - x1;
-//		int height = y2 - y1;
 
 		//By default, the grid will be 9x9 (see above: TOTAL_COLUMNS and TOTAL_ROWS) 
 		g.setColor(Color.BLACK);
@@ -113,18 +111,56 @@ public class MyPanel extends JPanel {
 			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS)));
 		}
 
-		//Paint cell colors
+		//Paints cell colors and numbers
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				if ((x == 0) || (y != TOTAL_ROWS)) {
-					Color c = colorArray[x][y];
-					g.setColor(c);
-					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
-				}
+				Color c = colorArray[x][y];
+				
+				g.setColor(c);
+				g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
+				
+				if(c == Color.LIGHT_GRAY){
+					Color countColor = null;	
+					switch (mineCounter[x][y]) {
+						case 0: 
+							countColor = Color.LIGHT_GRAY;
+							break;
+						case 1:
+							countColor = Color.BLUE;
+							break;
+						case 2:
+							countColor = Color.GREEN;
+							break;
+						case 3:
+							countColor = Color.RED;
+							break;
+						case 4:
+							countColor = new Color(0, 0, 139); //dark blue
+							break;
+						case 5:
+							countColor = new Color(165, 42, 42); //brown
+							break;
+						case 6:
+							countColor = Color.CYAN;
+							break;
+						case 7:
+							countColor = Color.MAGENTA;
+							break;
+						case 8:
+							countColor = Color.GRAY;
+							break;
+						case 10:
+							countColor =  Color.BLACK;
+							break;
+						}
+					
+					g.setColor(countColor);
+					g.drawString("" + mineCounter[x][y], x1 + (x * (INNER_CELL_SIZE + 1) + 12), y1 + ((y+1) * (INNER_CELL_SIZE + 1) - 10) ); 
+				}	
 			}
 		}
-		
 	}
+	
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
@@ -150,6 +186,7 @@ public class MyPanel extends JPanel {
 		}
 		return x;
 	}
+	
 	public int getGridY(int x, int y) {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;

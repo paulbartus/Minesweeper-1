@@ -1,14 +1,12 @@
-//import java.awt.Color;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-//import java.util.Random;
-
 import javax.swing.JFrame;
 
 public class MyMouseAdapter extends MouseAdapter {
-//	private Random generator = new Random();
+
 	public void mousePressed(MouseEvent e) {
 		switch (e.getButton()) {
 		case 1:		//Left mouse button
@@ -76,7 +74,13 @@ public class MyMouseAdapter extends MouseAdapter {
 						//Do nothing
 					} else {
 						//Released the mouse button on the same cell where it was pressed
-						//Insert code for left mouse here
+						
+						if(myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != 10)
+						{
+							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
+						} else {
+							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
+						}
 					}
 				}
 			}
