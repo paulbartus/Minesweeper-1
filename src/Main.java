@@ -7,7 +7,7 @@ public class Main {
 		myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		myFrame.setLocation(400, 150);
 		myFrame.setSize(277, 300);;
-		myFrame.setResizable(false);
+		myFrame.setResizable(false); 
 
 		MyPanel myPanel = new MyPanel();
 		myFrame.add(myPanel);

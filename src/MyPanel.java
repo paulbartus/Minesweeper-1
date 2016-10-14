@@ -57,7 +57,7 @@ public class MyPanel extends JPanel {
 				mineCounter[col][row] = MINE;
 		}
 		
-		//count bombs near
+		//count bombs nearby
 		for (int x = 0; x < mineCounter.length; x++) {
 			for (int y = 0; y < mineCounter[0].length; y++) {
 				if(mineCounter[x][y] != MINE) {

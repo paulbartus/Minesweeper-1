@@ -171,7 +171,7 @@ public class MyMouseAdapter extends MouseAdapter {
 						}
 						if (gameWon || gameLost) {
 							myPanel.createTheMines();
-							for (x = 0; x < 9; x++) {   //The grid
+							for (x = 0; x < 9; x++) {   	//The grid
 								for (y = 0; y < 9; y++) {
 									myPanel.colorArray[x][y] = Color.WHITE;
 									firstMove = false;
