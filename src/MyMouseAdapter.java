@@ -131,7 +131,9 @@ public class MyMouseAdapter extends MouseAdapter {
 			}
 			myPanel.repaint();
 			if (gameWon) {
-				JOptionPane.showMessageDialog(myFrame, "You Win!");
+				JOptionPane.showMessageDialog(myFrame, "You Win! \nRight click to play again!");
+			} else if (gameLost) {
+				JOptionPane.showMessageDialog(myFrame, "You Lose! \nRight click to play again!");
 			}
 			break;
 		case 3:		//Right mouse button
@@ -171,6 +173,17 @@ public class MyMouseAdapter extends MouseAdapter {
 							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
 						} else if(myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED){
 							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
+						}
+						if (gameWon || gameLost) {
+							myPanel.createTheMines();
+							for (x = 0; x < 9; x++) {   //The grid
+								for (y = 0; y < 9; y++) {
+									myPanel.colorArray[x][y] = Color.WHITE;
+									firstMove = false;
+									gameWon = false;
+									gameLost = false;
+								}
+							}
 						}
 					}
 				}
