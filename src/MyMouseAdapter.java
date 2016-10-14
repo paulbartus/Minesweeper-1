@@ -4,9 +4,14 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class MyMouseAdapter extends MouseAdapter {
 	private boolean firstMove = false;
+	private boolean gameLost = false;
+	private boolean gameWon = false;
+	
+	
 	public void mousePressed(MouseEvent e) {
 		switch (e.getButton()) {
 		case 1:		//Left mouse button
@@ -102,26 +107,32 @@ public class MyMouseAdapter extends MouseAdapter {
 							}
 							firstMove = true;
 						}
-						
-						if(myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == 10 && myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != Color.RED)
-						{
-							//game  is lost
-							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
-
-						} else if (myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == 0 && myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != Color.RED) {
-							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
-							myPanel.uncoverZeros(myPanel.mouseDownGridX, myPanel.mouseDownGridY);
-							//check win
-						} else {
-							if(myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != Color.RED){
-							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
-							//check win
+						if (!gameLost && !gameWon) {
+							if(myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == 10 && myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != Color.RED)
+							{
+								//game  is lost
+								gameLost = myPanel.gameLost();
+	
+							} else if (myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == 0 && myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != Color.RED) {
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
+								myPanel.uncoverZeros(myPanel.mouseDownGridX, myPanel.mouseDownGridY);
+								//check win
+								gameWon = myPanel.checkWin();
+							} else {
+								if(myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != Color.RED){
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
+								//check win
+								gameWon = myPanel.checkWin();
+								}
 							}
 						}
 					}
 				}
 			}
 			myPanel.repaint();
+			if (gameWon) {
+				JOptionPane.showMessageDialog(myFrame, "You Win!");
+			}
 			break;
 		case 3:		//Right mouse button
 			c = e.getComponent();
