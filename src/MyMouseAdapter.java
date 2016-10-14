@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class MyMouseAdapter extends MouseAdapter {
+	
 	private boolean firstMove = false;
 	private boolean gameLost = false;
 	private boolean gameWon = false;
@@ -63,6 +64,7 @@ public class MyMouseAdapter extends MouseAdapter {
 			break;
 		}
 	}
+	
 	public void mouseReleased(MouseEvent e) {
 		switch (e.getButton()) {
 		case 1:		//Left mouse button
@@ -85,10 +87,7 @@ public class MyMouseAdapter extends MouseAdapter {
 			myPanel.y = y;
 			int gridX = myPanel.getGridX(x, y);
 			int gridY = myPanel.getGridY(x, y);
-			if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
-				//Had pressed outside
-				//Do nothing
-			} else {
+			
 				if ((gridX == -1) || (gridY == -1)) {
 					//Is releasing outside
 					//Do nothing
@@ -99,7 +98,7 @@ public class MyMouseAdapter extends MouseAdapter {
 					} else {
 						//Released the mouse button on the same cell where it was pressed
 						
-						if(!firstMove) {//will spawn the mines until the first cell that was pressed has 0 mines nearby
+						if(!firstMove) {		//will spawn the mines until the first cell that was pressed has 0 mines nearby
 							if (myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != 0) {
 								do {
 									myPanel.createTheMines();
@@ -128,7 +127,7 @@ public class MyMouseAdapter extends MouseAdapter {
 						}
 					}
 				}
-			}
+			
 			myPanel.repaint();
 			if (gameWon) {
 				JOptionPane.showMessageDialog(myFrame, "You Win! \nRight click to play again!");
@@ -157,10 +156,6 @@ public class MyMouseAdapter extends MouseAdapter {
 			gridX = myPanel.getGridX(x, y);
 			gridY = myPanel.getGridY(x, y);
 			
-			if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
-				//Had pressed outside
-				//Do nothing
-			} else {
 				if ((gridX == -1) || (gridY == -1)) {
 					//Is releasing outside
 					//Do nothing
@@ -187,7 +182,7 @@ public class MyMouseAdapter extends MouseAdapter {
 						}
 					}
 				}
-			}
+			
 			myPanel.repaint();
 			break;
 		default:    //Some other button (2 = Middle mouse button, etc.)

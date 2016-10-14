@@ -2,25 +2,24 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.Random;
-
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel {
 	private static final long serialVersionUID = 3426940946811133635L;
-	private static final int GRID_X = 0;
-	private static final int GRID_Y = 0;
+	private static final int GRID_X = 0;	//to change grid location
+	private static final int GRID_Y = 0;	//to change grid location
 	private static final int INNER_CELL_SIZE = 29;
 	private static final int TOTAL_COLUMNS = 9;
 	private static final int TOTAL_ROWS = 9; 
-	private static final int MINE = 10;//10 identifies if the array has a mine
-	private static final int NUMBER_OF_MINES = 10;//total mines that appear in the game
+	private static final int MINE = 10;		//10 is an arbitrary number to identify a mine (cannot be from 0 to 8)
+	private static final int NUMBER_OF_MINES = 10;		//total mines that appear in the game
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
 	
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
-	public int mineCounter[][] =  new int[TOTAL_COLUMNS][TOTAL_ROWS];//provides information about the cell, mines nearby or if is a mine
+	public int mineCounter[][] =  new int[TOTAL_COLUMNS][TOTAL_ROWS];	//provides information about the cell, mines nearby or if is a mine
 
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
@@ -179,7 +178,7 @@ public class MyPanel extends JPanel {
 							countColor = Color.BLUE;
 							break;
 						case 2:
-							countColor = Color.GREEN;
+							countColor = new Color(0, 204, 0); //green
 							break;
 						case 3:
 							countColor = Color.RED;
@@ -211,7 +210,7 @@ public class MyPanel extends JPanel {
 		}
 	}
 	
-	public boolean gameLost() {//when game is lost reveal the mines
+	public boolean gameLost() {		//when game is lost reveal the mines
 		for (int x = 0; x < colorArray.length; x++) {
 			for (int y = 0; y < colorArray[0].length ; y++) {
 				if (mineCounter[x][y] == MINE) {
@@ -226,8 +225,8 @@ public class MyPanel extends JPanel {
 		boolean  won = true;
 		for (int x = 0 ; x < colorArray.length; x++) {
 			for (int y = 0 ; y < colorArray[0].length; y++) {
-				if (mineCounter[x][y] != MINE && colorArray[x][y] == Color.WHITE) {//won was declared true. Then we check if the game has not been won
-					won = false;												// if we have white cells that are not mine, the game has not been won
+				if (mineCounter[x][y] != MINE && colorArray[x][y] == Color.WHITE) {		//won was declared true. Then we check if the game has not been won
+					won = false;														// if we have white cells that are not mine, the game has not been won
 				}
 			}
 		}
