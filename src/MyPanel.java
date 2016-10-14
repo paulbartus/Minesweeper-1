@@ -43,7 +43,6 @@ public class MyPanel extends JPanel {
 	}
 	
 	public void createTheMines() {
-		
 		//initialize the bombs
 		mineCounter = new int[TOTAL_COLUMNS][TOTAL_ROWS];
 		Random randomColumn = new Random();
@@ -90,6 +89,57 @@ public class MyPanel extends JPanel {
 					}
 					mineCounter[x][y] = neighborCount;
 				}
+			}
+		}
+	}
+	
+	public void uncoverZeros(int x, int y) {
+		if (x > 0 && y > 0 && colorArray[x-1][y-1] == Color.WHITE) {//up left
+			colorArray[x-1][y-1] = Color.LIGHT_GRAY;
+			if (mineCounter[x-1][y-1] == 0) {
+				uncoverZeros(x-1,y-1);
+			}
+		}
+		if (y > 0 && colorArray[x][y-1] == Color.WHITE) {//up
+			colorArray[x][y-1] = Color.LIGHT_GRAY;
+			if (mineCounter[x][y-1] == 0) {
+				uncoverZeros(x,y-1);
+			}
+		}
+		if (x < colorArray.length - 1 && y > 0 && colorArray[x+1][y-1] == Color.WHITE) {//up right
+			colorArray[x+1][y-1] = Color.LIGHT_GRAY;
+			if (mineCounter[x+1][y-1] == 0) {
+				uncoverZeros(x+1,y-1);
+			}
+		}
+		if (x > 0 && colorArray[x-1][y] == Color.WHITE) {//left
+			colorArray[x-1][y] = Color.LIGHT_GRAY;
+			if (mineCounter[x-1][y] == 0) {
+				uncoverZeros(x-1,y);
+			}
+		}
+		if (x < colorArray.length - 1 && colorArray[x+1][y] == Color.WHITE) {//right
+			colorArray[x+1][y] = Color.LIGHT_GRAY;
+			if (mineCounter[x+1][y] == 0) {
+				uncoverZeros(x+1,y);
+			}
+		}
+		if (x > 0 && y < colorArray[0].length - 1 && colorArray[x-1][y+1] == Color.WHITE) {//down right
+			colorArray[x-1][y+1] = Color.LIGHT_GRAY;
+			if (mineCounter[x-1][y+1] == 0) {
+				uncoverZeros(x-1,y+1);
+			}
+		}
+		if (y < colorArray[0].length - 1 && colorArray[x][y+1] == Color.WHITE) {//down
+			colorArray[x][y+1] = Color.LIGHT_GRAY;
+			if (mineCounter[x][y+1] == 0) {
+				uncoverZeros(x,y+1);
+			}
+		}
+		if (x < colorArray.length - 1 && y < colorArray[0].length - 1 && colorArray[x+1][y+1] == Color.WHITE) {//down left
+			colorArray[x+1][y+1] = Color.LIGHT_GRAY;
+			if (mineCounter[x+1][y+1] == 0) {
+				uncoverZeros(x+1,y+1);
 			}
 		}
 	}

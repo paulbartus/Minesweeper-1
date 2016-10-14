@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 
 public class MyMouseAdapter extends MouseAdapter {
-
+	private boolean firstMove = false;
 	public void mousePressed(MouseEvent e) {
 		switch (e.getButton()) {
 		case 1:		//Left mouse button
@@ -75,11 +75,27 @@ public class MyMouseAdapter extends MouseAdapter {
 					} else {
 						//Released the mouse button on the same cell where it was pressed
 						
-						if(myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != 10)
+						if(!firstMove) {//will spawn the mines until the first cell that was pressed has 0 mines nearby
+							if (myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != 0) {
+								do {
+									myPanel.createTheMines();
+								} while(myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] != 0);
+							}
+							firstMove = true;
+						}
+						
+						if(myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == 10)
 						{
-							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
-						} else {
+							//game  is lost
 							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
+
+						} else if (myPanel.mineCounter[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == 0) {
+							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
+							myPanel.uncoverZeros(myPanel.mouseDownGridX, myPanel.mouseDownGridY);
+							//check win
+						} else {
+							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
+							//check win
 						}
 					}
 				}
