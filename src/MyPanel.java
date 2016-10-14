@@ -211,6 +211,29 @@ public class MyPanel extends JPanel {
 		}
 	}
 	
+	public boolean gameLost() {//when game is lost reveal the mines
+		for (int x = 0; x < colorArray.length; x++) {
+			for (int y = 0; y < colorArray[0].length ; y++) {
+				if (mineCounter[x][y] == MINE) {
+					colorArray[x][y] = Color.BLACK;
+				}
+			}
+		}
+		return true;
+	}
+	
+	public boolean checkWin() {
+		boolean  won = true;
+		for (int x = 0 ; x < colorArray.length; x++) {
+			for (int y = 0 ; y < colorArray[0].length; y++) {
+				if (mineCounter[x][y] != MINE && colorArray[x][y] == Color.WHITE) {//won was declared true. Then we check if the game has not been won
+					won = false;												// if we have white cells that are not mine, the game has not been won
+				}
+			}
+		}
+		return won;
+	}
+	
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
